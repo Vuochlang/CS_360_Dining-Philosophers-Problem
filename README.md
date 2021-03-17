@@ -1,6 +1,6 @@
 # CS 360 - Systems Programming   
 
-<h1> Assignment 5: Dining Philosophers Problem using <i>semaphores</i></h1>
+<h1> Assignment 5: Dining Philosophers Problem using <i style="color:blue;">semaphores</i></h1>
 
 03/12/2021
 
