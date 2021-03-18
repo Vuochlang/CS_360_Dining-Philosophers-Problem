@@ -33,19 +33,19 @@ int main(int argc, char *argv[]){
             int eating = 0;
             int thinking = 0;
             int cycle = 0;
+            int temp;
 
             srand(id); // random
 
-            while (eating < 100) {
-                int a, b, temp;
-                cycle ++;
+            temp = randomGaussian(11, 7);
+            if (temp < 0)
+                temp = 0;
+            printf("Philosopher %d is thinking for %d seconds (%d)\n", id, temp, thinking);
+            thinking += temp;
+            sleep(temp);
 
-                temp = randomGaussian(11, 7);
-                if (temp < 0)
-                    temp = 0;
-                printf("Philosopher %d is thinking for %d seconds (%d)\n", id, temp, thinking);
-                thinking += temp;
-                sleep(temp);
+            while (eating < 100) {
+                int a, b;
 
                 a = semop(chopsticks[id % 5], pickUp, 1);  // chopstick to the left
                 b = semop(chopsticks[(id + 1) % 5], pickUp, 1);  // chopstick to the right
@@ -67,13 +67,21 @@ int main(int argc, char *argv[]){
                         write(2, strerror(errno), strlen(strerror(errno)));
 
                     // after eating at least 100 seconds, terminate
-                    if (eating > 100) {
+                    if (eating >= 20) {
                         printf("Philosopher %d ate for %d seconds and thought for %d seconds, over %d cycles.\n", id, eating, thinking, cycle);
                         exit(1);
                     }
+
+                    temp = randomGaussian(11, 7);
+                    if (temp < 0)
+                        temp = 0;
+                    printf("Philosopher %d is thinking for %d seconds (%d)\n", id, temp, thinking);
+                    thinking += temp;
+                    sleep(temp);
+                    cycle ++;
                 }
 
-                if ( a < 0 || b < 0) {  // when picked only one chopstick
+                else if ( a == 0 || b == 0) {  // when picked only one chopstick
                     if (a < 0)  // put down the left chopstick
                         semop(chopsticks[id % 5], putDown, 1);
                     if (b < 0)  // right chopstick
