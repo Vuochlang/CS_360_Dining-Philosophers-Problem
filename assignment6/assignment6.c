@@ -95,7 +95,7 @@ void startAction(int *id) {
                 write(2, strerror(errno), strlen(strerror(errno)));
 
             // after eating at least 100 seconds, terminate
-            if (eating[philId] >= 20) {
+            if (eating[philId] >= 100) {
                 printf("Philosopher %d ate for %d seconds and thought for %d seconds, over %d cycles.\n", philId, eating[philId], thinking[philId], cycle[philId]);
                 return;
             }
